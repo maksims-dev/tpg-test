@@ -1,0 +1,5 @@
+.gitignore
+README.md
+shopify.theme.toml
+
+config/settings_data.json
