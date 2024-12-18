@@ -384,7 +384,7 @@ if (!customElements.get('product-info')) {
         // objects that showcase different responses at random
         const objects = [
           'https://mocki.io/v1/ff8c06b6-4873-48d3-bc92-10d13802308f', // 7 in stock
-          'https://mocki.io/v1/ae39822a-edb2-40a3-ae7c-81d09e0280f8', // 0 in stock
+          'https://mocki.io/v1/cbb5a6fe-d0b5-47ee-9de8-8cce44f3acf3', // 0 in stock
           'https://mocki.io/v1/ff8c06b6-4873-48d3-bc92-10d13802308g', // 404
           'https://httpbin.org/status/500', // 500
         ]
