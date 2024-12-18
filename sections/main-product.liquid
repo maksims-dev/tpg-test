@@ -9,6 +9,11 @@
     data-zoom-on-hover
   {% endif %}
 >
+  {%- assign show_volume_discounts = false -%}
+  {%- if product.quantity_price_breaks_configured? or section.settings.price_break_quantity > 0 -%}
+    {%- assign show_volume_discounts = true -%}
+  {%- endif -%}
+
   {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
   {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
   {{ 'component-price.css' | asset_url | stylesheet_tag }}
@@ -21,7 +26,7 @@
     {{ 'component-swatch-input.css' | asset_url | stylesheet_tag }}
     {{ 'component-swatch.css' | asset_url | stylesheet_tag }}
   {% endunless %}
-  {%- if product.quantity_price_breaks_configured? -%}
+  {%- if show_volume_discounts -%}
     {{ 'component-volume-pricing.css' | asset_url | stylesheet_tag }}
   {%- endif -%}
 
@@ -41,7 +46,7 @@
 
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-  {%- if product.quantity_price_breaks_configured? -%}
+  {%- if show_volume_discounts -%}
     <script src="{{ 'show-more.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
@@ -114,7 +119,7 @@
                     price_class: 'price--large'
                   -%}
                 </div>
-                {%- if product.quantity_price_breaks_configured? -%}
+                {%- if show_volume_discounts -%}
                   <div class="volume-pricing-note" id="Volume-Note-{{ section.id }}">
                     <span>{{ 'products.product.volume_pricing.note' | t }}</span>
                   </div>
@@ -292,7 +297,7 @@
                         assign current_qty_for_volume_pricing = cart_qty | plus: product.selected_or_first_available_variant.quantity_rule.increment
                       endif
                     -%}
-                    {%- if product.quantity_price_breaks_configured? -%}
+                    {%- if show_volume_discounts -%}
                       <price-per-item
                         id="Price-Per-Item-{{ section.id }}"
                         data-section-id="{{ section.id }}"
@@ -396,7 +401,7 @@
                       </span>
                     {%- endif -%}
                   </div>
-                  {%- if product.quantity_price_breaks_configured? -%}
+                  {%- if show_volume_discounts -%}
                     <volume-pricing class="parent-display" id="Volume-{{ section.id }}">
                       {%- if product.selected_or_first_available_variant.quantity_price_breaks.size > 0 -%}
                         <span class="caption-large">{{ 'products.product.volume_pricing.title' | t }}</span>
@@ -436,6 +441,31 @@
                             </button>
                           </show-more-button>
                         {%- endif -%}
+                      {%- elsif section.settings.price_break_quantity > 0 -%}
+                        <span class="caption-large">{{ 'products.product.volume_pricing.title' | t }}</span>
+                        <ul class="list-unstyled">
+                          {% # Initial Price %}
+                          <li>
+                            <span>1+</span>
+                            {%- assign price = product.selected_or_first_available_variant.price | money_with_currency -%}
+                            <span data-text="{{ 'products.product.volume_pricing.price_at_each' | t: price: variant_price }}">
+                              {{- 'sections.quick_order_list.each' | t: money: price -}}
+                            </span>
+                          </li>
+
+                          {% # Price Break %}
+                          {%- assign discount_multiplicator = 100 | minus: section.settings.price_break_discount_percentage | divided_by: 100.00 -%}
+                          {%- assign price_break_price = product.selected_or_first_available_variant.price | times: discount_multiplicator | money_with_currency -%}
+                          <li>
+                            <span>
+                              {{- section.settings.price_break_quantity -}}
+                              <span aria-hidden="true">+</span></span
+                            >
+                            <span data-text="{{ 'products.product.volume_pricing.price_at_each' | t: price: price_break_price }}">
+                              {{- 'sections.quick_order_list.each' | t: money: price_break_price -}}
+                            </span>
+                          </li>
+                        </ul>
                       {%- endif -%}
                     </volume-pricing>
                   {%- endif -%}
@@ -2088,6 +2118,26 @@
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-product.settings.price_break.header"
+    },
+    {
+      "type": "number",
+      "id": "price_break_quantity",
+      "label": "t:sections.main-product.settings.price_break.quantity",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "price_break_discount_percentage",
+      "min": 1,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "t:sections.main-product.settings.price_break.discount_percentage",
+      "default": 10
     },
     {
       "type": "header",

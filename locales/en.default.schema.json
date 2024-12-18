@@ -2378,6 +2378,11 @@
         }
       },
       "settings": {
+        "price_break": {
+          "header": "Price Break",
+          "quantity": "Quantity to activate discount",
+          "discount_percentage": "Discount amount"
+        },
         "header": {
           "content": "Media",
           "info": "Learn more about [media types.](https://help.shopify.com/manual/products/product-media)"

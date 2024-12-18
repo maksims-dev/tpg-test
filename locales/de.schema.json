@@ -2058,6 +2058,11 @@
         }
       },
       "settings": {
+        "price_break": {
+          "header": "Staffelrabatt",
+          "quantity": "Menge um Rabatt zu aktivieren",
+          "discount_percentage": "Rabatt"
+        },
         "header": {
           "content": "Medien",
           "info": "Mehr Informationen über [Medienarten](https://help.shopify.com/manual/products/product-media)."
