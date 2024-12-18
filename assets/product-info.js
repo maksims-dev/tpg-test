@@ -10,14 +10,18 @@ if (!customElements.get('product-info')) {
       pendingRequestUrl = null;
       preProcessHtmlCallbacks = [];
       postProcessHtmlCallbacks = [];
+      stockElement = undefined;
 
       constructor() {
         super();
 
         this.quantityInput = this.querySelector('.quantity__input');
+        this.stockElement = this.querySelector('.stock-element');
       }
 
       connectedCallback() {
+        this.initStock();
+        
         this.initializeProductSwapUtility();
 
         this.onVariantChangeUnsubscriber = subscribe(
@@ -374,6 +378,34 @@ if (!customElements.get('product-info')) {
             current.innerHTML = updated.innerHTML;
           }
         }
+      }
+
+      async initStock() {
+        // objects that showcase different responses at random
+        const objects = [
+          'https://mocki.io/v1/ff8c06b6-4873-48d3-bc92-10d13802308f', // 7 in stock
+          'https://mocki.io/v1/ae39822a-edb2-40a3-ae7c-81d09e0280f8', // 0 in stock
+          'https://mocki.io/v1/ff8c06b6-4873-48d3-bc92-10d13802308g', // 404
+          'https://httpbin.org/status/500', // 500
+        ]
+
+        let messageType = 'unknown';
+        const request = await fetch(objects[Math.floor(Math.random() * objects.length)])
+        .then(response => response.json())
+        .then(json => {
+          const quantity = json.quantity
+          if (!quantity) return;
+          if (quantity > 0) {
+            messageType = 'inStock';
+          } else {
+            messageType = 'outOfStock';
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+        this.stockElement.innerHTML = this.stockElement.dataset[messageType];
       }
 
       get productForm() {

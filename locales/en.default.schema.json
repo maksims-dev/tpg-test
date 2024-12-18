@@ -2094,6 +2094,9 @@
             }
           }
         },
+        "stock": {
+          "name": "Stock"
+        },
         "share": {
           "name": "Share",
           "settings": {

@@ -2032,6 +2032,9 @@
             }
           }
         },
+        "stock": {
+          "name": "Verfügbarkeit"
+        },
         "inventory": {
           "name": "Inventarstatus",
           "settings": {

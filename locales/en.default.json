@@ -126,6 +126,12 @@
       "inventory_out_of_stock": "Out of stock",
       "inventory_out_of_stock_continue_selling": "In stock",
       "sku": "SKU",
+      "stock": {
+        "title": "Availability",
+        "in_stock": "In stock",
+        "out_of_stock": "Out of stock",
+        "unknown": "Contact support",
+      },
       "on_sale": "Sale",
       "product_variants": "Product variants",
       "media": {

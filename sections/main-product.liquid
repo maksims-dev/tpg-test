@@ -212,6 +212,18 @@
                   <span class="visually-hidden">{{ 'products.product.sku' | t }}:</span>
                   {{- product.selected_or_first_available_variant.sku -}}
                 </p>
+              {%- when 'stock' -%}
+                <p
+                  class="product__stock caption"
+                  id="Stock-{{ section.id }}"
+                  role="status"
+                  {{ block.shopify_attributes }}
+                >
+                  <span class="">{{ 'products.product.stock.title' | t }}:&nbsp;</span>
+                  <span class="stock-element" data-unknown="{{ 'products.product.stock.unknown' | t }}" data-in-stock="{{ 'products.product.stock.in_stock' | t }}" data-out-of-stock="{{ 'products.product.stock.out_of_stock' | t }}">
+                    <span class="loading__spinner">{{ 'loading-spinner.svg' | inline_asset_content }}</span>
+                  </span>
+                </p>
               {%- when 'custom_liquid' -%}
                 {{ block.settings.custom_liquid }}
               {%- when 'collapsible_tab' -%}
@@ -831,6 +843,11 @@
           "label": "t:sections.main-product.blocks.sku.settings.text_style.label"
         }
       ]
+    },
+    {
+      "type": "stock",
+      "name": "t:sections.main-product.blocks.stock.name",
+      "limit": 1
     },
     {
       "type": "inventory",
